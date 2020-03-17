@@ -10,8 +10,12 @@ var api = new ParseServer({
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',
 });
 
-app.use('/parse', api);
+var mountPath = process.env.PARSE_MOUNT || "/parse"
+app.use(mountPath, api)
 
-app.listen(1337, function() {
-  console.log('parse-server-example running on port 1337.');
-});
+var port = process.env.PORT || 1337
+var httpServer = require("http").createServer(app)
+
+httpServer.listen(port, function () {
+  console.log(process.title + " running on port " + port + ".")
+})
